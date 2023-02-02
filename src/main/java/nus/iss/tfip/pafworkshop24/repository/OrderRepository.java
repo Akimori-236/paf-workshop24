@@ -2,6 +2,7 @@ package nus.iss.tfip.pafworkshop24.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import nus.iss.tfip.pafworkshop24.model.Order;
@@ -15,6 +16,8 @@ public class OrderRepository {
        
         @Autowired
         private JdbcTemplate template;
+        @Autowired
+        KeyHolder keyHolder;
 
         public int insertOrder(Order order) {
                 return template.update(insertOrderSQL,
