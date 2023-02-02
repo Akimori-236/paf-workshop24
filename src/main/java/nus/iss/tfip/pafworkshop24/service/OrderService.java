@@ -1,7 +1,5 @@
 package nus.iss.tfip.pafworkshop24.service;
 
-import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,10 +18,17 @@ public class OrderService {
     LineItemRepository itemRepo;
 
     @Transactional(rollbackFor = OrderException.class)
-    public void insertOrder(Order order) {
+    public int insertOrder(Order order) throws OrderException {
         // String orderId = UUID.randomUUID().toString().substring(8);
         // order.setOrderId(orderId);
-        int orderId = orderRepo.insertOrder(order);
+
+        // get the auto increment orderID
+        final int orderId = orderRepo.insertOrder(order);
+        if (order.getItemList().size() > 3){
+             OrderException oe = new OrderException("Maximum 3 types of items per order");
+             throw oe;
+        }
         itemRepo.insertLineItems(order.getItemList(), orderId);
+        return orderId;
     }
 }

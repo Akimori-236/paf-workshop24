@@ -7,25 +7,15 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import nus.iss.tfip.pafworkshop24.model.LineItem;
-import nus.iss.tfip.pafworkshop24.model.Order;
 
 @Repository
 public class LineItemRepository {
 
-    public static final String insertLineItemSQL = """
-            INSERT INTO order(product, unit_price, discount, quantity, order_id)
-            VALUES(?, ?, ?, ?, ?)
-            """;
-
     @Autowired
     private JdbcTemplate template;
 
-    public void insertLineItem(Order order) {
-
-    }
-
-    public void insertLineItems(List<LineItem> itemList, Integer orderId) {
-        List<Object[]> arrData = itemList.stream()
+    public int[] insertLineItems(List<LineItem> itemList, Integer orderId) {
+        List<Object[]> params = itemList.stream()
                 .map(item -> {
                     Object[] obj = new Object[6];
                     obj[0] = item.getProduct();
@@ -37,6 +27,6 @@ public class LineItemRepository {
                 })
                 .toList();
 
-        template.batchUpdate(insertLineItemSQL, arrData);
+        return template.batchUpdate(SQL.SQLInsertLineItem, params);
     }
 }

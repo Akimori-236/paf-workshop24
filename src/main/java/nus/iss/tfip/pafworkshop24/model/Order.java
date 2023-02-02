@@ -1,7 +1,7 @@
 package nus.iss.tfip.pafworkshop24.model;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.sql.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -22,6 +22,6 @@ public class Order {
     private List<LineItem> itemList = new LinkedList<>();
 
     public void addItem(List<LineItem> itemList) {
-
+        //
     }
 }
