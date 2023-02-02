@@ -1,7 +1,11 @@
 package nus.iss.tfip.pafworkshop24.repository;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
@@ -17,14 +21,22 @@ public class OrderRepository {
         @Autowired
         private JdbcTemplate template;
         @Autowired
-        KeyHolder keyHolder;
+        KeyHolder holder;
 
         public int insertOrder(Order order) {
-                return template.update(insertOrderSQL,
-                                order.getOrderDate(),
-                                order.getCustomerName(),
-                                order.getShippingAddress(),
-                                order.getNotes(),
-                                order.getTax());
-        }
+                template.update(new PreparedStatementCreator() {
+                    @Override
+                    public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+                        PreparedStatement ps = connection.prepareStatement(insertOrderSQL, Statement.RETURN_GENERATED_KEYS);
+                        ps.setDate(1, order.getOrderDate());
+                        ps.setString(2, order.getCustomerName());
+                        ps.setString(3, order.getShippingAddress());
+                        ps.setString(4, order.getNotes());
+                        ps.setDouble(5, order.getTax());
+                        return ps;
+                    }
+                }, holder);
+                return holder.getKey().intValue();
+            }
+            
 }

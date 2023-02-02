@@ -15,7 +15,7 @@ import nus.iss.tfip.pafworkshop24.model.LineItem;
 
 @Controller
 @RequestMapping(path = "/cart")
-public class CartController {
+public class OrderController {
     
     @PostMapping
     public String postCart(@RequestBody MultiValueMap<String, String> cart, Model model, HttpSession session) {
