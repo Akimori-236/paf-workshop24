@@ -9,6 +9,7 @@
 <body>
     <div>
         <h2>Your cart</h2>
+        <p data-th-if="${itemList.isEmpty()}">Your cart is empty.</p>
         <table>
             <tr data-th-each="it : ${itemList}" data-th-object="${it}">
                 <td data-th-text="*{product}"></td>
@@ -17,6 +18,8 @@
                 <td data-th-text="*{quantity}"></td>
             </tr>
         </table>
+        <a href="/">Add more items</a>
+        <a data-th-href="@{/checkout}">Checkout</a>
     </div>
 </body>
 </html>

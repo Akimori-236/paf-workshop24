@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -25,6 +26,18 @@ public class OrderController {
     @Autowired
     private OrderService orderSvc;
 
+    @GetMapping
+    public String getCart(Model model, HttpSession session) {
+        List<LineItem> itemList = (List<LineItem>) session.getAttribute("cart");
+        if (itemList == null) {
+            itemList = new LinkedList<>();
+            session.setAttribute("cart", itemList);
+        }
+        // pass list to thymeleaf
+        model.addAttribute("itemList", itemList);
+        return "cart";
+    }
+
     @PostMapping(consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public String addToCart(@Valid LineItem item, Model model, HttpSession session) {
         List<LineItem> itemList = (List<LineItem>) session.getAttribute("cart");
@@ -32,8 +45,9 @@ public class OrderController {
             itemList = new LinkedList<>();
             session.setAttribute("cart", itemList);
         }
+        // add incoming item to item list
         itemList.add(item);
-        
+
         // store new list back into sessionStorage
         session.setAttribute("cart", itemList);
         // pass list to thymeleaf
@@ -41,8 +55,19 @@ public class OrderController {
         return "cart";
     }
 
+    @GetMapping(path = "/checkout")
+    public String getCheckout(Model model, HttpSession session) {
+        // retrieve cart from session
+        List<LineItem> itemList = (List<LineItem>) session.getAttribute("cart");
+        // bind order with list to thymeleaf
+        Order order = new Order();
+        order.setItemList(itemList);
+        model.addAttribute("order", order);
+        return "checkout";
+    }
+
     @PostMapping(path = "/checkout")
-    public String postOrder(@RequestBody MultiValueMap<String, String> cart, Model model, HttpSession session) {
+    public String Checkout(@RequestBody MultiValueMap<String, String> cart, Model model, HttpSession session) {
         List<LineItem> itemList = (List<LineItem>) session.getAttribute("cart");
 
         // populate order for insertion
