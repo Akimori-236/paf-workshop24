@@ -1,6 +1,6 @@
 package nus.iss.tfip.pafworkshop24.repository;
 
-public interface SQL {
+public class SQL {
 
     public static final String SQLInsertLineItem = """
             INSERT INTO line_item(product, unit_price, discount, quantity, order_id)

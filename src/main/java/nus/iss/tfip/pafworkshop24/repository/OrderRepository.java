@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import nus.iss.tfip.pafworkshop24.model.Order;
@@ -16,11 +17,10 @@ public class OrderRepository {
 
     @Autowired
     private JdbcTemplate template;
-    @Autowired
-    private GeneratedKeyHolder holder;
 
     // returns auto_increment id of inserted order
     public Integer insertOrder(Order order) {
+        KeyHolder holder = new GeneratedKeyHolder();
         template.update((PreparedStatementCreator) con -> {
             PreparedStatement ps = con.prepareStatement(SQL.SQLInsertOrder, Statement.RETURN_GENERATED_KEYS);
             ps.setDate(1, order.getOrderDate());
@@ -30,7 +30,7 @@ public class OrderRepository {
             ps.setBigDecimal(5, order.getTax());
             return ps;
         }, holder);
-        
+
         return holder.getKey().intValue();
     }
 }

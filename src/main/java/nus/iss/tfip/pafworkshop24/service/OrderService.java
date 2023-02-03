@@ -24,6 +24,7 @@ public class OrderService {
 
         // get the auto increment orderID
         final int orderId = orderRepo.insertOrder(order);
+        
         if (order.getItemList().size() > 3){
              OrderException oe = new OrderException("Maximum 3 types of items per order");
              throw oe;

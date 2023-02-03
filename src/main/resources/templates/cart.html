@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shensang Shopping Cart</title>
+</head>
+<body>
+    <div>
+        <form action="/add" method="POST" data-th-object="${item}">
+            <div>
+                <label for="productID">Product</label>
+                <input type="text" name="product" id="productID" data-th-field="*{product}">
+            </div>
+            <div>
+                <label for="">Unit Price</label>
+                <input type="text" name="unitprice" id="" data-th-field="*{unitPrice}">
+            </div>
+            <div>
+                <label for="">Discount</label>
+                <input type="text" name="discount" id="" data-th-field="*{discount}">
+            </div>
+            <div>
+                <label for="">Qty</label>
+                <input type="text" name="quantity" id="" data-th-field="*{quantity}">
+            </div>
+            <button type="submit">Add To Cart</button>
+        </form>
+        <table>
+            <tr data-th-each="it : ${itemList}" data-th-object="${it}">
+                <td data-th-text="*{product}"></td>
+                <td data-th-text="*{unitPrice}"></td>
+                <td data-th-text="*{discount}"></td>
+                <td data-th-text="*{quantity}"></td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>
