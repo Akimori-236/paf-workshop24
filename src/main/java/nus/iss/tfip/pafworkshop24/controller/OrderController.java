@@ -3,8 +3,6 @@ package nus.iss.tfip.pafworkshop24.controller;
 import java.sql.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.math.BigDecimal;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -15,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import nus.iss.tfip.pafworkshop24.model.LineItem;
 import nus.iss.tfip.pafworkshop24.model.Order;
 import nus.iss.tfip.pafworkshop24.service.OrderService;
@@ -27,19 +26,17 @@ public class OrderController {
     private OrderService orderSvc;
 
     @PostMapping(consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public String addToCart(@RequestBody MultiValueMap<String, String> form, Model model, HttpSession session) {
+    public String addToCart(@Valid LineItem item, Model model, HttpSession session) {
         List<LineItem> itemList = (List<LineItem>) session.getAttribute("cart");
         if (itemList == null) {
             itemList = new LinkedList<>();
             session.setAttribute("cart", itemList);
         }
-        String item = form.getFirst("product");
-        Float unitPrice = Float.parseFloat(form.getFirst("unitPrice"));
-        Float discount = Float.parseFloat(form.getFirst("discount"));
-        Integer quantity = Integer.parseInt(form.getFirst("quantity"));
-        itemList.add(LineItem.create(item, unitPrice, discount, quantity));
-
-        // model.addAttribute("lineitem", item);
+        itemList.add(item);
+        
+        // store new list back into sessionStorage
+        session.setAttribute("cart", itemList);
+        // pass list to thymeleaf
         model.addAttribute("itemList", itemList);
         return "cart";
     }

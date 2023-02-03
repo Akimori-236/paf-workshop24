@@ -8,25 +8,7 @@
 </head>
 <body>
     <div>
-        <form action="/add" method="POST" data-th-object="${item}">
-            <div>
-                <label for="productID">Product</label>
-                <input type="text" name="product" id="productID" data-th-field="*{product}">
-            </div>
-            <div>
-                <label for="">Unit Price</label>
-                <input type="text" name="unitprice" id="" data-th-field="*{unitPrice}">
-            </div>
-            <div>
-                <label for="">Discount</label>
-                <input type="text" name="discount" id="" data-th-field="*{discount}">
-            </div>
-            <div>
-                <label for="">Qty</label>
-                <input type="text" name="quantity" id="" data-th-field="*{quantity}">
-            </div>
-            <button type="submit">Add To Cart</button>
-        </form>
+        <h2>Your cart</h2>
         <table>
             <tr data-th-each="it : ${itemList}" data-th-object="${it}">
                 <td data-th-text="*{product}"></td>

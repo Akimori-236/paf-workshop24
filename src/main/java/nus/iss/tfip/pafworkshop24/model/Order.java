@@ -21,7 +21,7 @@ public class Order {
     private BigDecimal tax;
     private List<LineItem> itemList = new LinkedList<>();
 
-    public void addItem(List<LineItem> itemList) {
-        //
+    public void addItem(LineItem i) {
+        this.itemList.add(i);
     }
 }
