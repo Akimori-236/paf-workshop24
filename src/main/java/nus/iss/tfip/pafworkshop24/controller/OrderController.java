@@ -1,16 +1,15 @@
 package nus.iss.tfip.pafworkshop24.controller;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.servlet.http.HttpSession;
@@ -56,31 +55,29 @@ public class OrderController {
     }
 
     @GetMapping(path = "/checkout")
-    public String getCheckout(Model model, HttpSession session) {
+    public String getCheckout(@Valid Order order, Model model, HttpSession session) {
         // retrieve cart from session
         List<LineItem> itemList = (List<LineItem>) session.getAttribute("cart");
         // bind order with list to thymeleaf
-        Order order = new Order();
         order.setItemList(itemList);
         model.addAttribute("order", order);
         return "checkout";
     }
 
     @PostMapping(path = "/checkout")
-    public String Checkout(@RequestBody MultiValueMap<String, String> cart, Model model, HttpSession session) {
-        List<LineItem> itemList = (List<LineItem>) session.getAttribute("cart");
-
+    public String Checkout(@Valid Order order, Model model, HttpSession session) {
+        System.out.println("    ITEMLISTSIZE >>> " + order.getItemList().size());
         // populate order for insertion
-        Order order = new Order();
-        Date orderDate = Date.valueOf(cart.getFirst("order_date"));
-        String item = cart.getFirst("item");
-        Integer quantity = Integer.parseInt(cart.getFirst("quantity"));
-        // unitPrice
-        // discount
-        itemList.add(new LineItem());
-
+        order.setOrderDate(Date.valueOf(LocalDate.now()));
+        // order.setCustomerName(form.getFirst("name"));
+        // order.setShippingAddress(form.getFirst("shippingAddress"));
+        // order.setNotes(form.getFirst("notes"));
+        // order.setTax(Float.parseFloat(form.getFirst("tax")));
+        
         int orderId = orderSvc.insertOrder(order);
-
+        if (orderId > 0) {
+            return "success";
+        }
         return "checkout";
     }
 }

@@ -29,7 +29,7 @@ public class OrderService {
              OrderException oe = new OrderException("Maximum 3 types of items per order");
              throw oe;
         }
-        itemRepo.insertLineItems(order.getItemList(), orderId);
+        itemRepo.batchInsertLineItems(order.getItemList(), orderId);
         return orderId;
     }
 }

@@ -1,6 +1,5 @@
 package nus.iss.tfip.pafworkshop24.model;
 
-import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,7 +17,7 @@ public class Order {
     private String customerName;
     private String shippingAddress;
     private String notes;
-    private BigDecimal tax;
+    private Float tax;
     private List<LineItem> itemList = new LinkedList<>();
 
     public void addItem(LineItem i) {

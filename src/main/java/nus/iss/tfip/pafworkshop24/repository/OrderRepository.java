@@ -27,7 +27,7 @@ public class OrderRepository {
             ps.setString(2, order.getCustomerName());
             ps.setString(3, order.getShippingAddress());
             ps.setString(4, order.getNotes());
-            ps.setBigDecimal(5, order.getTax());
+            ps.setFloat(5, order.getTax());
             return ps;
         }, holder);
 

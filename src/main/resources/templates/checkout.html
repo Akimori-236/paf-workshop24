@@ -11,7 +11,10 @@
             <div>
                 <h2>Your cart</h2>
                 <table>
-                    <tr data-th-each="it : *{itemList}" data-th-object="${it}">
+                    <tr
+                        data-th-each="it : ${order.itemList}"
+                        data-th-object="${it}"
+                    >
                         <td data-th-text="*{product}"></td>
                         <td data-th-text="*{unitPrice}"></td>
                         <td data-th-text="*{discount}"></td>
@@ -20,8 +23,8 @@
                 </table>
             </div>
             <h2>Your shipping details</h2>
-            <form action="#" method="POST" data-th-action="@{/checkout}">
-                <div>
+            <div>
+                <form action="#" method="POST" data-th-action="@{/cart/checkout}">
                     <div>
                         <label for="nameID">Customer Name:</label>
                         <input
@@ -58,8 +61,9 @@
                             data-th-field="*{tax}"
                         />
                     </div>
-                </div>
-            </form>
+                    <button type="submit">CHECKOUT</button>
+                </form>
+            </div>
         </div>
     </body>
 </html>
