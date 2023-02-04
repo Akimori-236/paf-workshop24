@@ -21,17 +21,18 @@ public class OrderRepository {
     // returns auto_increment id of inserted order
     public Integer insertOrder(Order order) {
         KeyHolder holder = new GeneratedKeyHolder();
+
         template.update((PreparedStatementCreator) con -> {
             PreparedStatement ps = con.prepareStatement(SQL.SQLInsertOrder, Statement.RETURN_GENERATED_KEYS);
-            // (order_date, customer_name, shipping_address, notes, tax)
-            ps.setDate(1, order.getOrderDate());
-            ps.setString(2, order.getCustomerName());
-            ps.setString(3, order.getShippingAddress());
-            ps.setString(4, order.getNotes());
-            ps.setFloat(5, order.getTax());
+            // (customer_name, shipping_address, notes, tax)
+            ps.setString(1, order.getCustomerName());
+            ps.setString(2, order.getShippingAddress());
+            ps.setString(3, order.getNotes());
+            ps.setFloat(4, order.getTax());
             return ps;
         }, holder);
 
-        return holder.getKeyAs(Integer.class);
+        // comes back as BigInteger
+        return holder.getKey().intValue();
     }
 }

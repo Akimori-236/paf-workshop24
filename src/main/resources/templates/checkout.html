@@ -10,6 +10,7 @@
         <div class="container" data-th-object="${order}">
             <div>
                 <h2>Your cart</h2>
+                <p data-th-if="${order.itemList.isEmpty()}">Your cart is empty.</p>
                 <table>
                     <tr
                         data-th-each="it : ${order.itemList}"
