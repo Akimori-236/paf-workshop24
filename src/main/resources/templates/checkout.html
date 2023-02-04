@@ -24,7 +24,11 @@
             </div>
             <h2>Your shipping details</h2>
             <div>
-                <form action="#" method="POST" data-th-action="@{/cart/checkout}">
+                <form
+                    action="#"
+                    method="POST"
+                    data-th-action="@{/cart/checkout}"
+                >
                     <div>
                         <label for="nameID">Customer Name:</label>
                         <input
@@ -55,7 +59,8 @@
                     <div>
                         <label for="taxID">Tax:</label>
                         <input
-                            type="text"
+                            type="number"
+                            step="any"
                             name="tax"
                             id="taxID"
                             data-th-field="*{tax}"

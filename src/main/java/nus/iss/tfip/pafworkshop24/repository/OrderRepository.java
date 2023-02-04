@@ -23,6 +23,7 @@ public class OrderRepository {
         KeyHolder holder = new GeneratedKeyHolder();
         template.update((PreparedStatementCreator) con -> {
             PreparedStatement ps = con.prepareStatement(SQL.SQLInsertOrder, Statement.RETURN_GENERATED_KEYS);
+            // (order_date, customer_name, shipping_address, notes, tax)
             ps.setDate(1, order.getOrderDate());
             ps.setString(2, order.getCustomerName());
             ps.setString(3, order.getShippingAddress());
@@ -31,6 +32,6 @@ public class OrderRepository {
             return ps;
         }, holder);
 
-        return holder.getKey().intValue();
+        return holder.getKeyAs(Integer.class);
     }
 }
