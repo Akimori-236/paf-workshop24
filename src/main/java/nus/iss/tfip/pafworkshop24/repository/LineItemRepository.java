@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 
+import nus.iss.tfip.pafworkshop24.exception.OrderException;
 import nus.iss.tfip.pafworkshop24.model.LineItem;
 
 @Repository
@@ -17,7 +18,7 @@ public class LineItemRepository {
     @Autowired
     private JdbcTemplate template;
 
-    public int[] batchInsertLineItems(List<LineItem> itemList, Integer orderId) {
+    public int[] batchInsertLineItems(List<LineItem> itemList, Integer orderId) throws OrderException {
         // List<Object[]> params = itemList.stream()
         // .map(item -> {
         // Object[] obj = new Object[6];
