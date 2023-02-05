@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+
 import nus.iss.tfip.pafworkshop24.model.LineItem;
+import nus.iss.tfip.pafworkshop24.exception.OrderException;
 import nus.iss.tfip.pafworkshop24.model.Order;
 import nus.iss.tfip.pafworkshop24.service.OrderService;
 import nus.iss.tfip.pafworkshop24.util.OrderUtil;
@@ -66,18 +68,15 @@ public class OrderController {
     }
 
     @PostMapping(path = "/checkout")
-    public String Checkout(@ModelAttribute Order order, Model model, HttpSession session) {
-        System.out.println("    ITEMLISTSIZE >>> " + order.getItemList().size());
-        DateFormatter df = new DateFormatter("yyyy-mm-dd");
-        order.setOrderDate(Date.valueOf(LocalDate.now())); // ???
-        //
-        // order.setCustomerName(form.getFirst("name"));
-        // order.setShippingAddress(form.getFirst("shippingAddress"));
-        // order.setNotes(form.getFirst("notes"));
-        // order.setTax(Float.parseFloat(form.getFirst("tax")));
+    public String Checkout(@ModelAttribute Order order, Model model, HttpSession session) throws OrderException {
+        List<LineItem> itemList = OrderUtil.getCart(session);
+        System.out.println("    ITEMLISTSIZE >>> " + itemList);
+        order.setItemList(itemList);
 
         int orderId = orderSvc.insertOrder(order);
         if (orderId > 0) {
+            // successful insert
+            OrderUtil.resetCart(session);
             return "success";
         }
         return "checkout";

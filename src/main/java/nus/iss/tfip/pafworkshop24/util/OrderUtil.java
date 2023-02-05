@@ -15,4 +15,9 @@ public class OrderUtil {
         }
         return itemList;
     }
+
+    public static void resetCart(HttpSession session) {
+        List<LineItem> itemList = new LinkedList<>();
+        session.setAttribute("cart", itemList);
+    }
 }
