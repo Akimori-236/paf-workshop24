@@ -2,8 +2,6 @@ package nus.iss.tfip.pafworkshop24.repository;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
-import java.util.Date;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
